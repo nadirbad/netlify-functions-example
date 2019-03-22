@@ -1,0 +1,15 @@
+{
+  "name": "netlify-functions-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/nadirbad/netlify-functions-example.git",
+  "author": "Nadir Badnjevic <nadirbad@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "netlify-lambda": "^1.4.3"
+  },
+  "scripts": {
+    "dev": "netlify-lambda serve functions",
+    "build": "netlify-lambda build functions"
+  }
+}
