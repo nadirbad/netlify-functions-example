@@ -1,6 +1,6 @@
 # Netlify Lambda Function example
 
-This is an example of serverless Lambda Function on [Netlify]() and implementation of Braintree payment [Braintree Simple Server](https://developers.braintreepayments.com/start/hello-server/node). We can easily use Lambda function to implement simple Node.js server.
+This is an example of serverless AWS Lambda Function on [Netlify]() and implementation of Braintree payment [Braintree Simple Server](https://developers.braintreepayments.com/start/hello-server/node). We can easily use Lambda function to implement simple Node.js server.
 
 ## Read the tutorial
 
@@ -15,7 +15,7 @@ yarn install
 ## Configure
 
 1. Setup Braintree Sandbox environment for testing [Sandbox](https://sandbox.braintreegateway.com/login)
-2. Create `.env` file in root of project and fill it in with values from your Braintree Sandbox account
+2. Create `.env` file in root of project and fill it in with your [API credentials](https://articles.braintreepayments.com/control-panel/important-gateway-credentials#api-credentials). Here is the content of `.env` file:
 
 ```
 BT_ENVIRONMENT = "sandbox"
@@ -54,6 +54,8 @@ curl -X POST
 ```
 
 ## See the Live Functions
+
+[![Netlify Status](https://api.netlify.com/api/v1/badges/d8c39b5f-dc9d-41b5-9134-fe6826dedecd/deploy-status)](https://app.netlify.com/sites/netlify-lambda-braintree/deploys)
 
 https://netlify-lambda-braintree.netlify.com/
 
