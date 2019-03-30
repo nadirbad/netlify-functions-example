@@ -13,9 +13,7 @@ exports.handler = async (event, context) => {
   }
 
   // Parse the body contents into an object.
-  console.log(event.body);
   const data = JSON.parse(event.body);
-  console.log(data);
 
   // Make sure we have all required data. Otherwise, return error.
   if (!data.payment_method_nonce || !data.amount) {
@@ -24,12 +22,12 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 400,
       headers: headers,
-      body: '' // JSON.stringify({ status: 'missing-information' })
+      body: JSON.stringify({ status: 'missing-information' })
     };
   }
 
   // Create a transaction
-  const paymentResult = await gateway.transaction.sale({
+  const result = await gateway.transaction.sale({
     amount: data.amount,
     paymentMethodNonce: data.payment_method_nonce,
     options: {
@@ -37,18 +35,53 @@ exports.handler = async (event, context) => {
     }
   });
 
-  if (paymentResult.success) {
+  if (result.success) {
+    // Successful transaction result
     return {
       statusCode: statusCodeOk,
       headers: headers,
-      body: JSON.stringify({ transaction: paymentResult.transaction.id })
+      body: JSON.stringify({ transaction: result.transaction.id })
     };
   } else {
-    const transactionErrors = result.errors.deepErrors();
-    return {
-      statusCode: statusCodeOk,
-      headers: headers,
-      body: JSON.stringify({ errors: transactionErrors })
-    };
+    // Unsuccessful result, handle different errors
+    const errors = result.errors.deepErrors();
+
+    // Validation errors
+    if (errors > 0) {
+      return {
+        statusCode: statusCodeOk,
+        headers: headers,
+        body: JSON.stringify({ errors: errors })
+      };
+    } else {
+      return {
+        statusCode: statusCodeOk,
+        headers: headers,
+        body: JSON.stringify({
+          errors: getTransactionError(result.transaction)
+        })
+      };
+    }
   }
+};
+
+// Check for different rejects like processor declined, settlement or gateway rejection
+const getTransactionError = transaction => {
+  let customMessage = '';
+  if (transaction.status === 'processor_declined') {
+    customMessage = `${transaction.processorResponseType}, ${
+      transaction.processorResponseCode
+    }, ${transaction.processorResponseText}`;
+  } else if (transaction.status === 'settlement_declined') {
+    customMessage = `${transaction.processorSettlementResponseCode}, ${
+      transaction.processorSettlementResponseText
+    }`;
+  } else if (transaction.status === 'gateway_rejected') {
+    customMessage = `${transaction.gatewayRejectionReason}`;
+  }
+
+  return {
+    error: transaction.status,
+    message: customMessage
+  };
 };
