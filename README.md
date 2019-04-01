@@ -4,7 +4,7 @@ This is an example of serverless AWS Lambda Function on [Netlify]() and implemen
 
 ## Read the tutorial
 
-You can find full tutorial on my blog post [coming soon]()
+You can find full tutorial on my [blog post](https://nadirbad.dev/posts/serverless-payments-with-braintree-and-netlify-functions/).
 
 ## Install
 
@@ -30,7 +30,7 @@ BT_PRIVATE_KEY = "XXXXXXX"
 yarn dev
 ```
 
-`netlify-lambda` starts server on http://localhost:9000/braintree-get-token and http://localhost:9000/braintree-create-transaction.
+`netlify-lambda` starts server on http://localhost:9000/ and there are two functions you need:
 
 **1. Generate a client token**
 
