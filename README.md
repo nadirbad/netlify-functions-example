@@ -9,7 +9,7 @@ You can find full tutorial on my [blog post](https://nadirbad.dev/posts/serverle
 ## Install
 
 ```
-yarn install
+npm install
 ```
 
 ## Configure
@@ -27,8 +27,9 @@ BT_PRIVATE_KEY = "XXXXXXX"
 ## Serve and test Lambda functions locally
 
 ```
-yarn dev
+npm run dev
 ```
+
 
 `netlify-lambda` starts server on http://localhost:9000/ and there are two functions you need:
 
@@ -43,14 +44,11 @@ curl -X GET http://localhost:9000/braintree-get-token
 You can create a transaction using an `amount` and the `nonceFromTheClient`.
 
 ```sh
-curl -X POST
-  http://localhost:9000/braintree-create-transaction
-  -H 'Content-Type: application/json'
-  -H 'cache-control: no-cache'
-  -d '{
-	"payment_method_nonce": "fake-valid-nonce",
-	"amount": 10.0
-}'
+curl -X POST \
+  http://localhost:9000/braintree-create-transaction \
+  -H 'Content-Type: application/json' \
+  -H 'cache-control: no-cache' \
+  -d '{ "payment_method_nonce": "fake-valid-nonce",	"amount": 10.0 }'
 ```
 
 ## See the Live Functions
